@@ -51,6 +51,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], func
     Route::get('/booking', [BookingController::class, 'index'])->name('admin.booking.index');
     Route::get('/booking/{id}', [BookingController::class, 'show'])->name('admin.booking.show');
     Route::put('/booking/{id}', [BookingController::class, 'update'])->name('admin.booking.update');
+    Route::delete('/booking/{id}', [BookingController::class, 'destroy'])->name('admin.booking.destroy');
 
     // Payment
     Route::get('/payment', [PaymentController::class, 'index'])->name('admin.payment.index');
@@ -92,11 +93,11 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth']], function () {
     Route::get('/riwayat-bantuan', [UserController::class, 'riwayatBantuan'])->name('user.riwayat-bantuan');
 
     // Payment User
-    Route::get('/payment', [UserPaymentController::class, 'index'])->name('user.payment');
+    Route::get('/payment', [UserPaymentController::class, 'index'])->name('user.payment'); // Tambahkan ini
     Route::get('/upload', [UserPaymentController::class, 'upload'])->name('user.upload');
     Route::post('/upload', [UserPaymentController::class, 'storeBukti'])->name('user.upload.store');
     Route::get('/confirmation/{id}', [UserPaymentController::class, 'confirmation'])->name('user.payment.confirmation');
-    Route::get('/check-status/{id}', [UserPaymentController::class, 'checkStatus'])->name('user.payment.check'); // Tambahkan ini
+    Route::get('/check-status/{id}', [UserPaymentController::class, 'checkStatus'])->name('user.payment.check');
 
     // Profil User
     Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');

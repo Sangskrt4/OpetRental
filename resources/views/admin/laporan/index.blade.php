@@ -3,7 +3,7 @@
 @section('content')
 <h2 class="text-center fw-bold mb-4">Laporan</h2>
 
-<div class="row">
+<div class="row" style="max-height: 600px; overflow-y: auto;">
     @foreach($laporans as $l)
     <div class="col-md-12 mb-3">
         <div class="card p-3 shadow-sm">

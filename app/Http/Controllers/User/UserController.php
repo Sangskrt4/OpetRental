@@ -61,7 +61,6 @@ class UserController extends Controller
             'kendaraan_id' => $kendaraan->id,
             'paket' => $paket,
             'total_harga' => $total_harga,
-            'harga_sewa' => $kendaraan->harga_sewa
         ]);
 
         return view('user.booking-data');
@@ -83,7 +82,7 @@ class UserController extends Controller
         $paket = (int) $request->paket;
         $total_harga = $request->total_harga;
 
-        $data = [
+        DB::table('bookings')->insert([
             'user_id' => auth()->id(),
             'kendaraan_id' => $kendaraan_id,
             'tanggal_mulai' => $request->tanggal_pemakaian,
@@ -96,14 +95,9 @@ class UserController extends Controller
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
             'jaminan' => $request->jaminan,
-            'status_penyewa' => 'Ready',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ];
+            'status_penyewa' => 'Ready'
+        ]);
 
-        DB::table('bookings')->insert($data);
-
-        // redirect ke payment
         return redirect()->route('user.payment');
     }
 
@@ -137,7 +131,7 @@ class UserController extends Controller
             'status' => 'Belum Ditangani'
         ]);
 
-        return redirect()->route('user.bantuan')->with('success', 'Laporan berhasil dikirim');
+        return response()->json(['success' => true]);
     }
 
     public function riwayatBantuan()
@@ -164,6 +158,15 @@ class UserController extends Controller
             'current_password' => 'nullable|min:8',
             'new_password' => 'nullable|min:8|confirmed',
         ]);
+
+        if ($request->has('no_wa') && $request->no_wa !== $user->no_wa) {
+            $lastChange = $user->no_wa_updated_at;
+            if ($lastChange && Carbon::parse($lastChange)->isToday()) {
+                return back()->withErrors(['no_wa' => 'Anda hanya bisa mengganti No. WhatsApp 1 kali dalam sehari.']);
+            }
+            $user->no_wa = $request->no_wa;
+            $user->no_wa_updated_at = now();
+        }
 
         $user->name = $request->name;
         $user->alamat = $request->alamat;

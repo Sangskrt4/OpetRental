@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="row justify-content-center">
+<div class="row justify-content-center" style="max-height: 800px; overflow-y: auto;">
     <div class="col-md-10">
         <div class="card border-0 shadow-lg" style="border-radius: 25px; overflow: hidden;">
             <!-- Header Profil -->
@@ -51,7 +51,7 @@
                     </button>
                 </div>
 
-                <div id="editProfilForm" style="display: none;">
+                <div id="editProfilForm" class="collapse">
                     <h5 class="fw-bold text-primary mb-4">Edit Profil</h5>
                     <form action="{{ route('admin.profil.update') }}" method="POST">
                         @csrf
@@ -68,7 +68,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">No. WhatsApp</label>
-                                <input type="text" class="form-control" value="{{ $user->no_wa ?? '-' }}" readonly disabled>
+                                <input type="text" name="no_wa" class="form-control" value="{{ old('no_wa', $user->no_wa) }}" placeholder="Masukkan No. WhatsApp">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Alamat</label>
@@ -87,7 +87,7 @@
                     </button>
                 </div>
 
-                <div id="keamananForm" style="display: none;">
+                <div id="keamananForm" class="collapse">
                     <h5 class="fw-bold text-primary mt-3">Keamanan</h5>
                     <form action="{{ route('admin.profil.update') }}" method="POST">
                         @csrf
@@ -138,26 +138,28 @@
 </div>
 
 <script>
-    // Toggle Edit Profil
+    // Toggle Edit Profil dengan Bootstrap Collapse
     document.getElementById('toggleEditBtn').addEventListener('click', function() {
-        const form = document.getElementById('editProfilForm');
-        if (form.style.display === 'none') {
-            form.style.display = 'block';
+        const target = document.getElementById('editProfilForm');
+        const bsCollapse = new bootstrap.Collapse(target, {
+            toggle: true
+        });
+        if (target.classList.contains('show')) {
             this.innerHTML = '<i class="fas fa-times"></i> Tutup Edit Profil';
         } else {
-            form.style.display = 'none';
             this.innerHTML = '<i class="fas fa-pen"></i> Edit Profil';
         }
     });
 
-    // Toggle Keamanan
+    // Toggle Keamanan dengan Bootstrap Collapse
     document.getElementById('toggleSecurityBtn').addEventListener('click', function() {
-        const form = document.getElementById('keamananForm');
-        if (form.style.display === 'none') {
-            form.style.display = 'block';
+        const target = document.getElementById('keamananForm');
+        const bsCollapse = new bootstrap.Collapse(target, {
+            toggle: true
+        });
+        if (target.classList.contains('show')) {
             this.innerHTML = '<i class="fas fa-times"></i> Tutup Keamanan';
         } else {
-            form.style.display = 'none';
             this.innerHTML = '<i class="fas fa-lock"></i> Keamanan';
         }
     });

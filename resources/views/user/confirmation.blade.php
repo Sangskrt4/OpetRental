@@ -30,14 +30,14 @@
 <script>
     const bookingId = {{ $booking->id }};
     let attempts = 0;
-    const maxAttempts = 30;
+    const maxAttempts = 720; // 1 jam
 
     const checkInterval = setInterval(function() {
         attempts++;
         fetch('/user/check-status/' + bookingId)
             .then(response => response.json())
             .then(data => {
-                if (data.status === 'disetujui' || data.status === 'menunggu') {
+                if (data.status === 'disetujui') {
                     clearInterval(checkInterval);
                     document.getElementById('statusContainer').innerHTML = `
                         <div class="alert alert-success">

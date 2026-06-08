@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<div class="card shadow-sm border-0">
+<div class="card shadow-sm border-0" style="max-height: 600px; overflow-y: auto;">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">

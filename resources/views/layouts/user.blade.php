@@ -114,5 +114,33 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Footer -->
+<footer class="mt-auto" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); color: white; padding: 40px 0 20px 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold">OPET Rental</h5>
+                <p class="small">Optimal Performa Ekspres Transport</p>
+                <p class="small">Solusi transportasi cepat, aman, dan terpercaya untuk kebutuhan Anda.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold">Kantor Pusat</h5>
+                <p class="small">Jln. Boulevard, Washington DC, United States</p>
+                <h5 class="fw-bold mt-3">Kantor Cabang</h5>
+                <p class="small">Jl. Kolam, Kenangan Baru, Kabupaten Deli Serdang, Sumatera Utara</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold">Kontak</h5>
+                <p class="small"><i class="fas fa-phone"></i> +62 896-XXXX-XXXX</p>
+                <p class="small"><i class="fas fa-envelope"></i> admin@opet.com</p>
+                <p class="small"><i class="fab fa-instagram"></i> @OpetRental_id</p>
+            </div>
+        </div>
+        <hr style="border-color: rgba(255,255,255,0.2);">
+        <div class="text-center">
+            <small>&copy; {{ date('Y') }} OPET Rental. All rights reserved.</small>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

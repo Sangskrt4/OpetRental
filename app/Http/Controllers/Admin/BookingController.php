@@ -35,4 +35,13 @@ class BookingController extends Controller
 
         return redirect()->route('admin.booking.index')->with('success', 'Status booking berhasil diperbarui');
     }
+
+    // --- TAMBAHKAN METHOD INI DI BAWAH UPDATE ---
+    public function destroy($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->delete();
+
+        return redirect()->route('admin.booking.index')->with('success', 'Booking berhasil dihapus');
+    }
 }

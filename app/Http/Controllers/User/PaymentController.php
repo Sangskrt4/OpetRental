@@ -20,6 +20,9 @@ class PaymentController extends Controller
 
     public function index()
     {
+        // Debug: cek apakah halaman payment diakses
+        // dd('Halaman payment berhasil diakses');
+
         $booking = Booking::where('user_id', auth()->id())
             ->where('status', 'pending')
             ->latest()
