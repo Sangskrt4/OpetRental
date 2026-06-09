@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Kendaraan;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -12,55 +13,65 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        // Filter periode
-        $periode = $request->periode ?? '7hari';
-        $startDate = $this->getStartDate($periode);
-
-        // Data untuk card
+        // Total booking (semua status)
         $totalBooking = Booking::count();
-        $pendapatanHariIni = Booking::whereDate('created_at', today())->sum('total_harga');
-        $unitTersedia = Kendaraan::where('status', 'Tersedia')->count();
-        $unitDisewa = Kendaraan::where('status', 'Disewa')->count();
 
-        // Data grafik realtime
-        $grafikData = $this->getGrafikData($startDate);
+        // Pendapatan Hari Ini (JOIN payments + bookings)
+        $pendapatanHariIni = Payment::where('payments.status', 'verified')
+            ->whereDate('payments.created_at', Carbon::today())
+            ->join('bookings', 'payments.booking_id', '=', 'bookings.id')
+            ->sum('bookings.total_harga');
+
+        // Jika tidak ada data, set ke 0
+        if (!$pendapatanHariIni) {
+            $pendapatanHariIni = 0;
+        }
+
+        // Unit Tersedia
+        $unitTersedia = Kendaraan::where('status', 'Tersedia')->count();
+
+        // ✅ UNIT DISEWA (OPSI 1 - Semua booking yang sudah disetujui)
+        $unitDisewa = Booking::where('status', 'disetujui')->count();
+
+        // Data pendapatan per periode (JOIN payments + bookings)
+        $periodeData = [
+            '1 Hari (Hari Ini)' => Payment::where('payments.status', 'verified')
+                ->whereDate('payments.created_at', Carbon::today())
+                ->join('bookings', 'payments.booking_id', '=', 'bookings.id')
+                ->sum('bookings.total_harga'),
+
+            '3 Hari Terakhir' => Payment::where('payments.status', 'verified')
+                ->whereDate('payments.created_at', '>=', now()->subDays(3))
+                ->join('bookings', 'payments.booking_id', '=', 'bookings.id')
+                ->sum('bookings.total_harga'),
+
+            '7 Hari Terakhir' => Payment::where('payments.status', 'verified')
+                ->whereDate('payments.created_at', '>=', now()->subDays(7))
+                ->join('bookings', 'payments.booking_id', '=', 'bookings.id')
+                ->sum('bookings.total_harga'),
+
+            '1 Bulan Terakhir' => Payment::where('payments.status', 'verified')
+                ->whereDate('payments.created_at', '>=', now()->subMonth())
+                ->join('bookings', 'payments.booking_id', '=', 'bookings.id')
+                ->sum('bookings.total_harga'),
+
+            '3 Bulan Terakhir' => Payment::where('payments.status', 'verified')
+                ->whereDate('payments.created_at', '>=', now()->subMonths(3))
+                ->join('bookings', 'payments.booking_id', '=', 'bookings.id')
+                ->sum('bookings.total_harga'),
+        ];
+
+        $totalSemua = Payment::where('payments.status', 'verified')
+            ->join('bookings', 'payments.booking_id', '=', 'bookings.id')
+            ->sum('bookings.total_harga');
 
         return view('admin.dashboard', compact(
             'totalBooking',
             'pendapatanHariIni',
             'unitTersedia',
             'unitDisewa',
-            'grafikData',
-            'periode'
+            'periodeData',
+            'totalSemua'
         ));
-    }
-
-    private function getStartDate($periode)
-    {
-        return match($periode) {
-            '1hari' => now()->subDay(),
-            '3hari' => now()->subDays(3),
-            '7hari' => now()->subDays(7),
-            '1bulan' => now()->subMonth(),
-            '3bulan' => now()->subMonths(3),
-            default => now()->subDays(7),
-        };
-    }
-
-    private function getGrafikData($startDate)
-    {
-        $dates = [];
-        $totals = [];
-
-        // Loop dari startDate sampai hari ini
-        for ($date = clone $startDate; $date <= now(); $date->addDay()) {
-            $dates[] = $date->format('d/m');
-            $totals[] = Booking::whereDate('created_at', $date)->sum('total_harga');
-        }
-
-        return [
-            'labels' => $dates,
-            'data' => $totals,
-        ];
     }
 }
