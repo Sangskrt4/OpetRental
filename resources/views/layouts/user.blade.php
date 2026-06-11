@@ -136,6 +136,22 @@
                 <p class="small"><i class="fab fa-instagram"></i> @OpetRental_id</p>
             </div>
         </div>
+
+        <!-- ====== BAGIAN TENGAH: BOX DOWNLOAD APLIKASI (VERSI KECIL) ====== -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-4">
+                <div class="p-3 rounded text-center" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                    <i class="fas fa-download fa-2x mb-1"></i>
+                    <h6 class="fw-bold mb-1">Download Aplikasi</h6>
+                    <p class="small mb-2">Booking & sewa lebih mudah</p>
+                    <a href="https://drive.google.com/your-link-here" target="_blank" class="btn btn-sm btn-light fw-bold text-primary w-100">
+                        <i class="fab fa-google-play"></i> Google Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- ====== END BOX DOWNLOAD ====== -->
+
         <hr style="border-color: rgba(255,255,255,0.2);">
         <div class="text-center">
             <small>&copy; {{ date('Y') }} OPET Rental. All rights reserved.</small>
