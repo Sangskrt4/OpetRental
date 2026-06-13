@@ -26,7 +26,7 @@
                         <td class="ps-4"><span class="badge bg-secondary">{{ $p->id }}</span></td>
                         <td><span class="badge bg-info">{{ $p->metode }}</span></td>
                         <td class="fw-bold">{{ $p->booking->user->name ?? '-' }}</td>
-                        <td>Rp {{ number_format($p->booking->total_harga, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($p->booking->total_harga ?? 0, 0, ',', '.') }}</td>
                         <td>
                             @if($p->bukti_pembayaran)
                                 <img src="{{ asset('storage/' . $p->bukti_pembayaran) }}" class="rounded" width="60" height="60" style="object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#buktiModal{{ $p->id }}">

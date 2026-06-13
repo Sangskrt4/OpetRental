@@ -43,7 +43,6 @@ class OnoPayService
         // $response = Http::get($this->baseUrl . '/payment/qr/check/' . $qrCode);
         // return $response->json();
 
-        // Dummy response (pending)
         return [
             'success' => true,
             'data' => [

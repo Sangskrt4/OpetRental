@@ -31,10 +31,12 @@
                 </div>
                 <div class="col-md-1">
                     <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        @if($b->kendaraan->jenis == 'Motor')
+                        @if($b->kendaraan && $b->kendaraan->jenis == 'Motor')
                             <i class="fas fa-motorcycle" style="font-size: 30px; color: white;"></i>
-                        @else
+                        @elseif($b->kendaraan && $b->kendaraan->jenis == 'Mobil')
                             <i class="fas fa-car" style="font-size: 30px; color: white;"></i>
+                        @else
+                            <i class="fas fa-question-circle" style="font-size: 30px; color: white;"></i>
                         @endif
                     </div>
                 </div>
